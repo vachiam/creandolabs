@@ -595,7 +595,7 @@ footer{background:var(--text);color:#fff;padding:64px 48px 32px;}
           </div>
         </div>
       </div>
-      <div data-fs-success style="display:none;" class="form-success">
+      <div class="form-success" style="display:none;">
         <span style="font-size:40px;">🎉</span>
         <h3>¡Recibimos tu solicitud!</h3>
         <p>Te enviamos una propuesta creativa en menos de 48 horas. ¡Nos emociona crear algo especial para tu Chiqui!</p>
@@ -793,9 +793,50 @@ function toggleMenu() {
 }
 
 // ── FORMSPREE ──
-window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
-formspree('initForm', { formElement: '#cotiza-form', formId: 'xzdwedoo' });
+document.getElementById('cotiza-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const form = e.target;
+  const btn = form.querySelector('[data-fs-submit-btn]');
+  const globalErr = document.querySelector('[data-fs-error]');
+
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+  globalErr.style.display = 'none';
+  globalErr.textContent = '';
+
+  // clear previous field errors
+  form.querySelectorAll('[aria-invalid]').forEach(el => el.removeAttribute('aria-invalid'));
+
+  try {
+    const res = await fetch('https://formspree.io/f/xzdwedoo', {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    });
+    const data = await res.json();
+
+    if (res.ok) {
+      window.location.href = 'thank-you.html';
+    } else {
+      // show field-level errors if present
+      if (data.errors) {
+        data.errors.forEach(err => {
+          const field = form.querySelector(`[name="${err.field}"]`);
+          if (field) field.setAttribute('aria-invalid', 'true');
+        });
+      }
+      globalErr.textContent = data.error || 'Algo salió mal. Por favor inténtalo de nuevo.';
+      globalErr.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Enviar cotización ✨';
+    }
+  } catch {
+    globalErr.textContent = 'Error de conexión. Por favor inténtalo de nuevo.';
+    globalErr.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Enviar cotización ✨';
+  }
+});
 </script>
-<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
 </body>
 </html>

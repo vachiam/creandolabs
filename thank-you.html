@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¡Gracias! — CreAndoLab</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;font-family:'Quicksand',sans-serif;overflow-x:hidden;}
+
+:root{
+  --pink:#F4A8B0; --peach:#FBCA8E; --yellow:#FDE17A; --lime:#CACE6A;
+  --mint:#AEDDB5; --teal:#8DD4D3; --periwinkle:#98B8DA;
+  --lavender:#B4A8DA; --mauve:#C4A4C8;
+  --text:#5a5258; --text-light:#8c8490;
+  --bg:#faf8f6; --radius:20px;
+}
+
+body{
+  background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;min-height:100vh;
+  padding:40px 24px;
+}
+
+/* ── CONFETTI DOTS ── */
+.dot{
+  position:fixed;border-radius:50%;pointer-events:none;
+  animation:drift linear infinite;
+}
+@keyframes drift{
+  0%  { transform:translateY(-60px) rotate(0deg); opacity:0; }
+  10% { opacity:1; }
+  90% { opacity:1; }
+  100%{ transform:translateY(110vh) rotate(720deg); opacity:0; }
+}
+
+/* ── LOGO ── */
+.logo{
+  margin-bottom:40px;
+}
+.logo img{ height:48px;object-fit:contain; }
+
+/* ── CARD ── */
+.card{
+  background:#fff;border-radius:32px;
+  box-shadow:0 20px 60px rgba(90,82,88,0.1);
+  padding:56px 48px;
+  max-width:560px;width:100%;
+  text-align:center;
+  position:relative;
+  overflow:visible;
+}
+
+/* ── EMOJI BURST ── */
+.burst{
+  font-size:72px;
+  display:block;
+  margin-bottom:16px;
+  animation:pop 0.6s cubic-bezier(0.175,0.885,0.32,1.275) both;
+}
+@keyframes pop{
+  0%  { transform:scale(0) rotate(-15deg); opacity:0; }
+  100%{ transform:scale(1) rotate(0deg); opacity:1; }
+}
+
+.card h1{
+  font-size:clamp(1.8rem,4vw,2.6rem);
+  font-weight:700;color:var(--text);
+  line-height:1.2;margin-bottom:16px;
+}
+.card h1 span{
+  background:linear-gradient(90deg,var(--pink),var(--peach),var(--teal));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+.card p{
+  font-size:17px;font-weight:500;color:var(--text-light);
+  line-height:1.7;margin-bottom:32px;
+}
+
+/* ── COLOR BAR ── */
+.color-bar{
+  height:6px;display:flex;width:100%;
+  border-radius:99px;overflow:hidden;
+  margin-bottom:40px;
+}
+.color-bar span{flex:1;}
+
+/* ── PHOTO STRIP ── */
+.photo-strip{
+  display:flex;justify-content:center;gap:16px;
+  margin-bottom:40px;
+  flex-wrap:wrap;
+}
+.photo-item{
+  width:110px;height:110px;
+  border-radius:16px;overflow:hidden;
+  border:4px solid #fff;
+  box-shadow:0 8px 24px rgba(90,82,88,0.14);
+  flex-shrink:0;
+  transition:transform 0.3s ease;
+}
+.photo-item:hover{ transform:scale(1.08) rotate(0deg) !important; }
+.photo-item img{ width:100%;height:100%;object-fit:cover;display:block; }
+.photo-item:nth-child(1){ transform:rotate(-5deg); animation:floatA 7s ease-in-out infinite; }
+.photo-item:nth-child(2){ transform:rotate(3deg);  animation:floatB 8s ease-in-out infinite 0.5s; }
+.photo-item:nth-child(3){ transform:rotate(-2deg); animation:floatA 9s ease-in-out infinite 1s; }
+.photo-item:nth-child(4){ transform:rotate(4deg);  animation:floatB 7s ease-in-out infinite 0.3s; }
+.photo-item:nth-child(5){ transform:rotate(-3deg); animation:floatA 8s ease-in-out infinite 0.8s; }
+
+@keyframes floatA{ 0%,100%{ transform:rotate(-5deg) translateY(0); } 50%{ transform:rotate(-3deg) translateY(-8px); } }
+@keyframes floatB{ 0%,100%{ transform:rotate(3deg) translateY(0); }  50%{ transform:rotate(5deg) translateY(-10px); } }
+
+/* ── BUTTONS ── */
+.actions{
+  display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 32px;border-radius:99px;
+  font-family:'Quicksand',sans-serif;font-weight:700;font-size:16px;
+  cursor:pointer;text-decoration:none;border:none;
+  transition:transform 0.15s,opacity 0.15s;
+}
+.btn:hover{ transform:translateY(-2px);opacity:0.9; }
+.btn-primary{ background:var(--teal);color:#fff; }
+.btn-wa{ background:#25D366;color:#fff; }
+
+/* ── DECO CIRCLES ── */
+.deco-tl{
+  position:absolute;width:100px;height:100px;border-radius:50%;
+  background:var(--peach);top:-30px;left:-30px;z-index:-1;
+  animation:floatB 6s ease-in-out infinite;
+}
+.deco-br{
+  position:absolute;width:70px;height:70px;border-radius:50%;
+  background:var(--lavender);bottom:-20px;right:-20px;z-index:-1;
+  animation:floatA 7s ease-in-out infinite 0.5s;
+}
+
+/* ── FOOTER NOTE ── */
+.footer-note{
+  margin-top:32px;font-size:13px;font-weight:500;color:var(--text-light);
+}
+</style>
+</head>
+<body>
+
+<!-- Confetti dots injected by JS -->
+
+<div class="logo">
+  <a href="index.html">
+    <img src="project/assets/logo-text.png" alt="CreAndoLab">
+  </a>
+</div>
+
+<div class="card">
+  <div class="deco-tl"></div>
+  <div class="deco-br"></div>
+
+  <div class="color-bar">
+    <span style="background:#F4A8B0"></span><span style="background:#FBCA8E"></span>
+    <span style="background:#FDE17A"></span><span style="background:#CACE6A"></span>
+    <span style="background:#AEDDB5"></span><span style="background:#8DD4D3"></span>
+    <span style="background:#98B8DA"></span><span style="background:#B4A8DA"></span>
+    <span style="background:#C4A4C8"></span>
+  </div>
+
+  <span class="burst">🎉</span>
+
+  <h1>¡Recibimos tu<br><span>solicitud!</span></h1>
+  <p>
+    Estamos emocionadas de crear algo especial para la celebración de tu Chiqui.
+    Te enviamos una propuesta creativa personalizada en menos de <strong>48 horas</strong>. 💛
+  </p>
+
+  <div class="photo-strip">
+    <div class="photo-item"><img src="project/carousel/c3.jpg" alt=""></div>
+    <div class="photo-item"><img src="project/carousel/c5.jpg" alt=""></div>
+    <div class="photo-item"><img src="project/uploads/2.jpg" alt=""></div>
+    <div class="photo-item"><img src="project/carousel/c8.jpg" alt=""></div>
+    <div class="photo-item"><img src="project/carousel/c1.jpg" alt=""></div>
+  </div>
+
+  <div class="actions">
+    <a href="index.html" class="btn btn-primary">← Volver al inicio</a>
+    <a href="https://wa.me/573014613576" target="_blank" class="btn btn-wa">💬 WhatsApp</a>
+  </div>
+</div>
+
+<p class="footer-note">© 2026 CreAndoLab · Bogotá, Colombia · Creados para crear 💛</p>
+
+<script>
+// ── CONFETTI DOTS ──
+const colors = ['#F4A8B0','#FBCA8E','#FDE17A','#CACE6A','#AEDDB5','#8DD4D3','#98B8DA','#B4A8DA','#C4A4C8'];
+for (let i = 0; i < 28; i++) {
+  const dot = document.createElement('div');
+  dot.className = 'dot';
+  const size = Math.random() * 14 + 6;
+  dot.style.cssText = `
+    width:${size}px; height:${size}px;
+    background:${colors[Math.floor(Math.random() * colors.length)]};
+    left:${Math.random() * 100}vw;
+    top:-60px;
+    animation-duration:${Math.random() * 8 + 6}s;
+    animation-delay:${Math.random() * 6}s;
+    opacity:0.7;
+  `;
+  document.body.appendChild(dot);
+}
+</script>
+</body>
+</html>
