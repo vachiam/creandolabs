@@ -70,7 +70,7 @@ body{font-family:'Quicksand',sans-serif;color:var(--text);background:var(--bg);o
 
 /* ── HERO ── */
 .section-hero{
-  min-height:100vh;padding-top:70px;
+  min-height:70vh;padding-top:70px;
   background:var(--hero-bg);
   display:flex;align-items:center;justify-content:center;
   position:relative;overflow:hidden;
@@ -202,6 +202,7 @@ section{padding:100px 48px;}
 .carousel-track-wrap{
   position:relative;
   overflow:hidden;
+  padding:20px 0;
   /* fade edges */
   mask-image:linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
   -webkit-mask-image:linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
@@ -284,6 +285,31 @@ section{padding:100px 48px;}
 }
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--teal);}
 .field textarea{resize:vertical;min-height:100px;}
+.form-success{
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;gap:12px;padding:48px 32px;
+  background:#fff;border:1.5px solid var(--card-border);border-radius:var(--radius);
+}
+.form-success h3{font-size:22px;font-weight:700;color:var(--text);}
+.form-success p{font-size:15px;color:var(--text-light);line-height:1.6;max-width:340px;}
+[data-fs-success]:not([style*="display:none"]){ display:flex !important; }
+.form-error-global{
+  font-size:14px;font-weight:600;color:#e05c5c;
+  background:#fdf0f0;border:1.5px solid #f5c6c6;border-radius:var(--radius-sm);
+  padding:12px 16px;display:none;margin-bottom:8px;
+}
+[data-fs-error]:not(:empty){ display:block !important; }
+.field-error{font-size:12px;font-weight:600;color:#e05c5c;margin-top:2px;display:none;}
+[data-fs-field][aria-invalid="true"]{border-color:#e05c5c !important;}
+.radio-group{display:flex;gap:12px;flex-wrap:wrap;}
+.radio-option{
+  display:flex;align-items:center;gap:8px;
+  background:#fff;border:1.5px solid var(--card-border);border-radius:var(--radius-sm);
+  padding:10px 16px;cursor:pointer;font-size:14px;font-weight:600;color:var(--text);
+  transition:border-color 0.2s, background 0.2s;flex:1;
+}
+.radio-option:has(input:checked){border-color:var(--teal);background:#e8f7f7;}
+.radio-option input{display:none;}
 .form-aside{display:flex;flex-direction:column;gap:24px;}
 .form-aside-card{
   background:#fff;border:1.5px solid var(--card-border);border-radius:var(--radius);
@@ -375,7 +401,6 @@ footer{background:var(--text);color:#fff;padding:64px 48px 32px;}
     <a href="#inicio">Inicio</a>
     <a href="#quienes">Quiénes somos</a>
     <a href="#servicios">Servicios</a>
-    <a href="#testimonios">Testimonios</a>
     <a href="#cotiza" class="btn-nav">Cotiza tu celebración</a>
   </div>
   <div class="hamburger" onclick="toggleMenu()">
@@ -448,7 +473,7 @@ footer{background:var(--text);color:#fff;padding:64px 48px 32px;}
         <div class="about-photo-deco-arch"></div>
         <div class="about-photo-deco-burst"></div>
         <div class="about-photo-frame">
-          <img src="project/uploads/team.jpg" alt="Equipo CreAndoLab">
+          <img src="project/uploads/Team_2.jpeg" alt="Equipo CreAndoLab">
         </div>
       </div>
     </div>
@@ -554,8 +579,8 @@ footer{background:var(--text);color:#fff;padding:64px 48px 32px;}
     <div class="form-grid">
       <div>
         <span class="section-label reveal">Cotiza tu celebración</span>
-        <h2 class="section-title reveal">¡Hagamos magia<br>juntos!</h2>
-        <p class="section-desc reveal" style="margin-bottom:0;">Cuéntanos sobre la celebración de tu Chiqui y te enviamos una propuesta a medida. También puedes escribirnos directamente por WhatsApp.</p>
+        <h2 class="section-title reveal">El laboratorio de<br>la diversión 🎉</h2>
+        <p class="section-desc reveal" style="margin-bottom:0;">Cuéntanos cómo imaginas tu celebración y recibe una propuesta creativa personalizada en menos de 48 horas.</p>
         <div class="form-aside" style="margin-top:32px;">
           <div class="form-aside-card reveal">
             <span style="font-size:28px;">💬</span>
@@ -570,90 +595,130 @@ footer{background:var(--text);color:#fff;padding:64px 48px 32px;}
           </div>
         </div>
       </div>
-      <form class="form-body reveal" onsubmit="submitForm(event)">
+      <div data-fs-success style="display:none;" class="form-success">
+        <span style="font-size:40px;">🎉</span>
+        <h3>¡Recibimos tu solicitud!</h3>
+        <p>Te enviamos una propuesta creativa en menos de 48 horas. ¡Nos emociona crear algo especial para tu Chiqui!</p>
+      </div>
+      <div data-fs-error class="form-error-global"></div>
+
+      <form id="cotiza-form" class="form-body reveal">
+
         <div class="form-row">
           <div class="field">
-            <label>Nombre completo</label>
-            <input type="text" placeholder="Tu nombre">
+            <label>Tu nombre</label>
+            <input type="text" name="nombre" placeholder="¿Cómo te llamas?" data-fs-field>
+            <span data-fs-error="nombre" class="field-error"></span>
           </div>
           <div class="field">
-            <label>Teléfono / WhatsApp</label>
-            <input type="tel" placeholder="+57...">
+            <label>Correo y WhatsApp</label>
+            <input type="text" name="contacto" placeholder="correo@mail.com · +57 300..." data-fs-field>
+            <span data-fs-error="contacto" class="field-error"></span>
           </div>
         </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label>Nombre del homenajeado</label>
+            <input type="text" name="homenajeado" placeholder="¿A quién celebramos?" data-fs-field>
+          </div>
+          <div class="field">
+            <label>Edad que cumple</label>
+            <input type="number" name="edad" placeholder="Ej: 7" min="1" max="18" data-fs-field>
+          </div>
+        </div>
+
         <div class="form-row">
           <div class="field">
             <label>Fecha de la celebración</label>
-            <input type="date">
+            <input type="date" name="fecha" data-fs-field>
           </div>
           <div class="field">
-            <label>Número de niños</label>
-            <input type="number" placeholder="Ej: 12" min="1">
+            <label>Hora</label>
+            <input type="time" name="hora" data-fs-field>
           </div>
         </div>
-        <div class="field">
-          <label>Tipo de servicio</label>
-          <select>
-            <option value="">Selecciona un servicio...</option>
-            <option>Doctores o Veterinarios</option>
-            <option>Diseñadores de Modas</option>
-            <option>Chef o Pasteleros</option>
-            <option>Maquilladores</option>
-            <option>Fotógrafos</option>
-            <option>Joyeros</option>
-            <option>Artista / Pintor</option>
-            <option>Personalizado</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Cuéntanos más</label>
-          <textarea placeholder="Edad de los niños, temática que tienes en mente, cualquier detalle especial..."></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">Enviar cotización ✨</button>
-      </form>
-    </div>
-  </div>
-</section>
 
-<!-- TESTIMONIOS -->
-<section class="section-testimonials" id="testimonios">
-  <div class="section-inner">
-    <span class="section-label reveal">Testimonios</span>
-    <h2 class="section-title reveal">Lo que dicen<br>las mamás</h2>
-    <div class="testimonials-grid">
-      <div class="testimonial-card reveal">
-        <div class="stars">★★★★★</div>
-        <p class="testi-text">"¡Mi hija no paraba de hablar del taller de diseño de modas! Fue la fiesta más original que hemos tenido. Los niños se fueron con sus prendas personalizadas y enormes sonrisas."</p>
-        <div class="testi-author">
-          <div class="testi-avatar" style="background:var(--pink);">L</div>
-          <div>
-            <p class="testi-name">Laura M.</p>
-            <p class="testi-sub">Mamá de Valentina, 7 años</p>
+        <div class="form-row">
+          <div class="field">
+            <label>Lugar del evento</label>
+            <input type="text" name="lugar" placeholder="Casa, salón social, exterior..." data-fs-field>
+          </div>
+          <div class="field">
+            <label>Número de invitados</label>
+            <select name="invitados" data-fs-field>
+              <option value="">Selecciona...</option>
+              <option>6</option>
+              <option>10</option>
+              <option>15</option>
+              <option>20</option>
+              <option>25</option>
+              <option>30</option>
+              <option>Más de 30</option>
+            </select>
           </div>
         </div>
-      </div>
-      <div class="testimonial-card reveal reveal-delay-1">
-        <div class="stars">★★★★★</div>
-        <p class="testi-text">"Contratamos el taller de pasteleros y fue un éxito total. Las niñas decoraron sus propias galletas y se las llevaron a casa. ¡El mejor recuerdo de la fiesta!"</p>
-        <div class="testi-author">
-          <div class="testi-avatar" style="background:var(--teal);">C</div>
-          <div>
-            <p class="testi-name">Carolina R.</p>
-            <p class="testi-sub">Mamá de Sofía, 6 años</p>
+
+        <div class="form-row">
+          <div class="field">
+            <label>Producto estrella a crear</label>
+            <select name="servicio" data-fs-field>
+              <option value="">Selecciona un taller...</option>
+              <option>Doctores o Veterinarios</option>
+              <option>Diseñadores de Modas</option>
+              <option>Chef o Pasteleros</option>
+              <option>Maquilladores</option>
+              <option>Fotógrafos</option>
+              <option>Joyeros</option>
+              <option>Artista / Pintor</option>
+              <option>Me orientan con opciones</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Paleta de colores preferida</label>
+            <input type="text" name="colores" placeholder="Ej: Rosado dorado, azul..." data-fs-field>
           </div>
         </div>
-      </div>
-      <div class="testimonial-card reveal reveal-delay-2">
-        <div class="stars">★★★★★</div>
-        <p class="testi-text">"Increíble experiencia. Los niños estuvieron completamente entretenidos con el taller de fotógrafos. El mini set fotográfico fue el hit de la fiesta. ¡100% recomendado!"</p>
-        <div class="testi-author">
-          <div class="testi-avatar" style="background:var(--lavender);">M</div>
-          <div>
-            <p class="testi-name">María P.</p>
-            <p class="testi-sub">Mamá de Emilio, 8 años</p>
+
+        <div class="form-row">
+          <div class="field">
+            <label>Intereses del cumpleañero</label>
+            <input type="text" name="intereses" placeholder="Ej: cocina, moda, construcción..." data-fs-field>
+          </div>
+          <div class="field">
+            <label>Presupuesto estimado</label>
+            <select name="presupuesto" data-fs-field>
+              <option value="">Selecciona un rango...</option>
+              <option>$800.000 – $1.000.000</option>
+              <option>$1.000.000 – $1.500.000</option>
+              <option>$1.500.000 – $2.500.000</option>
+              <option>$2.500.000 – $3.500.000</option>
+              <option>Otro</option>
+            </select>
           </div>
         </div>
-      </div>
+
+        <div class="field">
+          <label>Acompañamiento</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="instructor" value="Sí deseo instructor" checked>
+              <span>👩‍🏫 Sí deseo instructor</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="instructor" value="Solo los kits con instrucciones">
+              <span>📦 Solo los kits con instrucciones</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Cuéntanos un sueño ✨</label>
+          <textarea name="comentarios" placeholder="Un detalle o sueño que haría esta fiesta inolvidable..." data-fs-field></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;" data-fs-submit-btn>Enviar cotización ✨</button>
+      </form>
     </div>
   </div>
 </section>
@@ -680,7 +745,6 @@ footer{background:var(--text);color:#fff;padding:64px 48px 32px;}
           <li><a href="#inicio">Inicio</a></li>
           <li><a href="#quienes">Quiénes somos</a></li>
           <li><a href="#servicios">Servicios</a></li>
-          <li><a href="#testimonios">Testimonios</a></li>
           <li><a href="#cotiza">Cotiza tu celebración</a></li>
         </ul>
       </div>
@@ -728,18 +792,10 @@ function toggleMenu() {
   }
 }
 
-// ── FORM SUBMIT ──
-function submitForm(e) {
-  e.preventDefault();
-  const btn = e.target.querySelector('button[type=submit]');
-  btn.textContent = '✅ ¡Enviado! Te contactamos pronto';
-  btn.style.background = '#4caf7d';
-  setTimeout(() => {
-    btn.textContent = 'Enviar cotización ✨';
-    btn.style.background = '';
-  }, 4000);
-  e.target.reset();
-}
+// ── FORMSPREE ──
+window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+formspree('initForm', { formElement: '#cotiza-form', formId: 'xzdwedoo' });
 </script>
+<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
 </body>
 </html>
